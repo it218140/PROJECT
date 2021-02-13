@@ -1,0 +1,41 @@
+
+
+<sec:authorize access="isAuthenticated()">
+    <div class="alert alert-dark" role="alert">
+        User: <sec:authentication property="principal.username" />, Role: <sec:authentication property="principal.authorities"/>
+    </div>
+</sec:authorize>
+
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $("[name='logout-nav']").click(
+        function() {
+            var urlCall = "<c:url value="/logout"></c:url>";
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            console.log(header);
+            console.log(token);
+            $.ajax({
+                url : urlCall,
+                type : 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success : function(result) {
+                    console.log(result);
+                    $(location).attr("href",
+                        "<c:url value="/login"></c:url>");
+                },
+                error : function(result) {
+                    console.log(result);
+                },
+            });
+        });
+</script>
+</body>
+</html>
